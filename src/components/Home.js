@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getUser, logout, getPosts, deletePost } from '../api';
 import CreatePost from './CreatePost';
+import Comment from './Comments';
 
 const Home = () => {
     const [user, setUser] = useState(null);
@@ -80,22 +81,18 @@ const Home = () => {
                         <div key={post.id} className="bg-white rounded-lg shadow-lg p-4 relative">
                             <h3 className="text-xl font-semibold">{post.title}</h3>
                             <p className="text-gray-600 mt-2">{post.content}</p>
+                            <Comment postId={post.id} />
                             <div className="absolute bottom-4 right-4 flex space-x-2">
-                                <button
-                                    onClick={() => handleEditPost(post)}
-                                    className="bg-yellow-500 hover:bg-yellow-600 text-white py-1 px-3 rounded"
-                                >
+                                <button onClick={() => handleEditPost(post)} className="bg-yellow-500 text-white py-1 px-3 rounded">
                                     Edit
                                 </button>
-                                <button
-                                    onClick={() => handleDeletePost(post.id)}
-                                    className="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded"
-                                >
+                                <button onClick={() => handleDeletePost(post.id)} className="bg-red-500 text-white py-1 px-3 rounded">
                                     Delete
                                 </button>
                             </div>
                         </div>
                     ))}
+
                 </div>
             </div>
         </div>

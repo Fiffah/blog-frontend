@@ -108,6 +108,28 @@ export const deletePost = async (id) => {
     });
 };
 
+export const getComments = async (postId) => {
+    const response = await axios.get(`${API_URL}/posts/${postId}/comments`, {
+        headers: getAuthHeaders()
+    });
+    return response.data;
+};
+
+export const createComment = async (postId, content) => {
+    const response = await axios.post(`${API_URL}/posts/${postId}/comments`, 
+        { content }, 
+        { headers: getAuthHeaders() }
+    );
+    return response.data;
+};
+
+export const deleteComment = async (commentId) => {
+    await axios.delete(`${API_URL}/comments/${commentId}`, {
+        headers: getAuthHeaders()
+    });
+};
+
+
 export const getUser = async () => {
     try {
         const response = await axios.get(`${API_URL}/user`, {
