@@ -82,7 +82,7 @@ const Home = () => {
                     <p className="text-xl">Loading...</p>
                 )}
 
-                {user?.role === 'admin' && <CreatePost onPostCreated={handlePostCreated} />}
+                {user?.role === 'admin' && <CreatePost onPostCreated={handlePostCreated} editingPost={editingPost} />}
 
                 <div className="grid grid-cols-3 gap-6 mt-8">
                     {posts.map((post) => (

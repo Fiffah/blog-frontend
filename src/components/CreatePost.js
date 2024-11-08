@@ -1,25 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { createPost, updatePost, getUser } from '../api';
+import { createPost, updatePost } from '../api';
 
 const CreatePost = ({ onPostCreated, editingPost }) => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [error, setError] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [user, setUser] = useState(null);
-
-    // Fetch user data untuk mendapatkan role
-    useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const userData = await getUser();
-                setUser(userData);
-            } catch (err) {
-                console.error("Failed to fetch user data:", err);
-            }
-        };
-        fetchUser();
-    }, []);
 
     useEffect(() => {
         if (editingPost) {
@@ -31,16 +17,6 @@ const CreatePost = ({ onPostCreated, editingPost }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        if (!localStorage.getItem("token")) {
-            setError("Anda tidak terautentikasi. Silakan login kembali.");
-            return;
-        }
-
-        if (user?.role !== 'admin') {
-            setError("Hanya admin yang dapat membuat atau mengedit postingan.");
-            return;
-        }
 
         try {
             if (editingPost) {
@@ -54,29 +30,33 @@ const CreatePost = ({ onPostCreated, editingPost }) => {
             setTitle('');
             setContent('');
             setError('');
-            setIsModalOpen(false);
+            closeModal();
         } catch (err) {
             setError(err.response?.data?.message || 'Failed to create/update post');
         }
     };
 
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setTitle('');
+        setContent('');
+    };
+
     return (
-        <div>
-            {user?.role === 'admin' && (
-                <button
-                    className="bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded"
-                    onClick={() => setIsModalOpen(true)}
-                >
-                    Create Post
-                </button>
-            )}
+        <>
+            <button
+                className="bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded"
+                onClick={() => setIsModalOpen(true)}
+            >
+                {editingPost ? 'Edit Post' : 'Create Post'}
+            </button>
 
             {isModalOpen && (
                 <>
                     <div className="fixed inset-0 bg-gray-900 bg-opacity-50 z-40"></div>
                     <div className="fixed inset-0 flex items-center justify-center z-50">
-                        <div className="bg-white p-8 rounded shadow-lg max-w-md w-full relative">
-                            <h2 className="text-2xl mb-4">{editingPost ? "Edit Post" : "Create a New Post"}</h2>
+                        <div className="bg-white p-8 rounded shadow-lg max-w-md w-full">
+                            <h2 className="text-2xl mb-4">{editingPost ? 'Edit Post' : 'Create a New Post'}</h2>
                             {error && <p className="text-red-500 mb-4">{error}</p>}
                             <form onSubmit={handleSubmit}>
                                 <input
@@ -95,16 +75,13 @@ const CreatePost = ({ onPostCreated, editingPost }) => {
                                 <div className="flex justify-end">
                                     <button
                                         type="button"
+                                        onClick={closeModal}
                                         className="mr-4 bg-gray-300 hover:bg-gray-400 text-black py-2 px-4 rounded"
-                                        onClick={() => setIsModalOpen(false)}
                                     >
                                         Cancel
                                     </button>
-                                    <button
-                                        type="submit"
-                                        className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded"
-                                    >
-                                        {editingPost ? "Update" : "Submit"}
+                                    <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded">
+                                        {editingPost ? 'Update' : 'Submit'}
                                     </button>
                                 </div>
                             </form>
@@ -112,7 +89,7 @@ const CreatePost = ({ onPostCreated, editingPost }) => {
                     </div>
                 </>
             )}
-        </div>
+        </>
     );
 };
 
