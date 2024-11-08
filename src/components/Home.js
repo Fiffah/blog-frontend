@@ -70,11 +70,17 @@ const Home = () => {
             </nav>
 
             <div className="p-8">
-                {user && <p className="text-3xl font-medium">Hello, {user.name}</p>}
-                <h2 className="text-3xl font-bold mb-6">Welcome to the Blog Platform!</h2>
-                <p className="text-lg mt-4">
-                    Your Role: <span className="font-bold text-blue-600">{user.role}</span>
-                </p>
+                {user ? (
+                    <>
+                        <p className="text-3xl font-medium">Hello, {user.name}</p>
+                        <p className="text-xl mt-2">Welcome to the Blog Platform!</p>
+                        <p className="text-lg mt-4">
+                            Your Role: <span className="font-bold text-blue-600">{user.role}</span>
+                        </p>
+                    </>
+                ) : (
+                    <p className="text-xl">Loading...</p>
+                )}
 
                 {user?.role === 'admin' && <CreatePost onPostCreated={handlePostCreated} />}
 
