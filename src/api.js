@@ -22,7 +22,7 @@ export const register = async (name, email, password, passwordConfirmation, navi
         });
 
         console.log("Response dari server:", response.data);
-        
+
         const token = response.data.token;
         localStorage.setItem("token", token);
 
@@ -67,6 +67,8 @@ export const getPosts = async () => {
 };
 
 export const createPost = async (title, content) => {
+    await getCsrfToken();
+
     try {
         const response = await axios.post(
             `${API_URL}/posts`,
@@ -79,6 +81,7 @@ export const createPost = async (title, content) => {
         throw error;
     }
 };
+
 
 export const getPostById = async (id) => {
     try {
