@@ -1,41 +1,27 @@
 import React, { useState } from 'react';
 import { createPost } from '../api';
-import { useNavigate } from 'react-router-dom';
 
-function CreatePost() {
+const CreatePost = () => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
-    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try {
-            await createPost({ title, content });
-            navigate('/');
-        } catch (error) {
-            console.error("Error creating post:", error);
-        }
+        await createPost(title, content);
+        setTitle('');
+        setContent('');
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <h2>Create Post</h2>
-            <input 
-                type="text" 
-                placeholder="Title" 
-                value={title} 
-                onChange={(e) => setTitle(e.target.value)} 
-                required 
-            />
-            <textarea 
-                placeholder="Content" 
-                value={content} 
-                onChange={(e) => setContent(e.target.value)} 
-                required 
-            />
-            <button type="submit">Submit</button>
-        </form>
+        <div>
+            <h1>Create Post</h1>
+            <form onSubmit={handleSubmit}>
+                <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" />
+                <textarea value={content} onChange={(e) => setContent(e.target.value)} placeholder="Content" />
+                <button type="submit">Submit</button>
+            </form>
+        </div>
     );
-}
+};
 
 export default CreatePost;

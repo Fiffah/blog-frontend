@@ -7,18 +7,47 @@ const getAuthHeaders = () => {
     return token ? { Authorization: `Bearer ${token}` } : {};
 };
 
-export const login = async (email, password) => {
+const getCsrfToken = async () => {
+    await axios.get('http://127.0.0.1:8000/sanctum/csrf-cookie');
+};
+export const register = async (name, email, password, passwordConfirmation, navigate) => {
     try {
-        const response = await axios.post(`${API_URL}/login`, { email, password }, { withCredentials: true });
+        const response = await axios.post(`${API_URL}/register`, {
+            name,
+            email,
+            password,
+            password_confirmation: passwordConfirmation
+        });
+
+        const token = response.data.token;
+        localStorage.setItem("token", token);
+
+        navigate('/');
+        return response.data;
+    } catch (error) {
+        console.error("Error during registration:", error.response?.data || error.message);
+        throw error;
+    }
+};
+export const login = async (email, password, navigate) => {
+    try {
+        await getCsrfToken();
+        const response = await axios.post(`${API_URL}/login`, { email, password });
         
         const token = response.data.token;
         localStorage.setItem("token", token);
 
+        navigate('/');
         return response.data;
     } catch (error) {
         console.error("Error during login:", error.response?.data || error.message);
         throw error;
     }
+};
+
+export const logout = (navigate) => {
+    localStorage.removeItem("token");
+    navigate('/login');
 };
 
 export const getPosts = async () => {
