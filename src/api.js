@@ -12,6 +12,8 @@ const getCsrfToken = async () => {
 };
 export const register = async (name, email, password, passwordConfirmation, navigate) => {
     try {
+        console.log("Data yang dikirim:", { name, email, password, password_confirmation: passwordConfirmation });
+
         const response = await axios.post(`${API_URL}/register`, {
             name,
             email,
@@ -19,6 +21,8 @@ export const register = async (name, email, password, passwordConfirmation, navi
             password_confirmation: passwordConfirmation
         });
 
+        console.log("Response dari server:", response.data);
+        
         const token = response.data.token;
         localStorage.setItem("token", token);
 
