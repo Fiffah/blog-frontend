@@ -75,7 +75,6 @@ const Home = () => {
                 <h2 className="text-3xl font-bold mb-6">Welcome to the Blog Platform!</h2>
                 <CreatePost onPostCreated={handlePostCreated} editingPost={editingPost} />
 
-                {/* Menampilkan daftar post */}
                 <div className="grid grid-cols-3 gap-6 mt-8">
                     {posts.map((post) => (
                         <div key={post.id} className="bg-white rounded-lg shadow-lg p-4 relative">
