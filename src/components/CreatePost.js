@@ -1,11 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { createPost, updatePost } from '../api';
+import { createPost, updatePost, getUser } from '../api';
 
 const CreatePost = ({ onPostCreated, editingPost }) => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [error, setError] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [user, setUser] = useState(null);
+
+    // Fetch user data untuk mendapatkan role
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const userData = await getUser();
+                setUser(userData);
+            } catch (err) {
+                console.error("Failed to fetch user data:", err);
+            }
+        };
+        fetchUser();
+    }, []);
 
     useEffect(() => {
         if (editingPost) {
@@ -20,6 +34,11 @@ const CreatePost = ({ onPostCreated, editingPost }) => {
 
         if (!localStorage.getItem("token")) {
             setError("Anda tidak terautentikasi. Silakan login kembali.");
+            return;
+        }
+
+        if (user?.role !== 'admin') {
+            setError("Hanya admin yang dapat membuat atau mengedit postingan.");
             return;
         }
 
@@ -43,17 +62,18 @@ const CreatePost = ({ onPostCreated, editingPost }) => {
 
     return (
         <div>
-            <button
-                className="bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded"
-                onClick={() => setIsModalOpen(true)}
-            >
-                Create Post
-            </button>
+            {user?.role === 'admin' && (
+                <button
+                    className="bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded"
+                    onClick={() => setIsModalOpen(true)}
+                >
+                    Create Post
+                </button>
+            )}
 
             {isModalOpen && (
                 <>
                     <div className="fixed inset-0 bg-gray-900 bg-opacity-50 z-40"></div>
-
                     <div className="fixed inset-0 flex items-center justify-center z-50">
                         <div className="bg-white p-8 rounded shadow-lg max-w-md w-full relative">
                             <h2 className="text-2xl mb-4">{editingPost ? "Edit Post" : "Create a New Post"}</h2>

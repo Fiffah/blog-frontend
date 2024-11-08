@@ -70,11 +70,9 @@ const Home = () => {
             </nav>
 
             <div className="p-8">
-                {user && (
-                    <p className="text-3xl font-medium">Hello, {user.name}</p>
-                )}
+                {user && <p className="text-3xl font-medium">Hello, {user.name}</p>}
                 <h2 className="text-3xl font-bold mb-6">Welcome to the Blog Platform!</h2>
-                <CreatePost onPostCreated={handlePostCreated} editingPost={editingPost} />
+                {user?.role === 'admin' && <CreatePost onPostCreated={handlePostCreated} />}
 
                 <div className="grid grid-cols-3 gap-6 mt-8">
                     {posts.map((post) => (
@@ -83,12 +81,16 @@ const Home = () => {
                             <p className="text-gray-600 mt-2">{post.content}</p>
                             <Comment postId={post.id} />
                             <div className="absolute bottom-4 right-4 flex space-x-2">
-                                <button onClick={() => handleEditPost(post)} className="bg-yellow-500 text-white py-1 px-3 rounded">
-                                    Edit
-                                </button>
-                                <button onClick={() => handleDeletePost(post.id)} className="bg-red-500 text-white py-1 px-3 rounded">
-                                    Delete
-                                </button>
+                                {user && user.role === 'admin' && (
+                                    <button onClick={() => handleEditPost(post)} className="bg-yellow-500 text-white py-1 px-3 rounded">
+                                        Edit
+                                    </button>
+                                )}
+                                {user && user.role === 'admin' && (
+                                    <button onClick={() => handleDeletePost(post.id)} className="bg-red-500 text-white py-1 px-3 rounded">
+                                        Delete
+                                    </button>
+                                )}
                             </div>
                         </div>
                     ))}
