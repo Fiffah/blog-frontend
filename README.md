@@ -9,7 +9,7 @@ Frontend aplikasi Single Page Application (SPA) untuk platform blog, dibangun me
 - Terhubung dengan API Laravel di backend.
 - Penyimpanan token menggunakan `localStorage`.
 
-## Teknologi yang Digunakan
+## Framework yang Digunakan
 - **React** (Frontend)
 - **Axios** (HTTP Requests)
 - **React Router** (Navigasi)
