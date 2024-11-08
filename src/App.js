@@ -15,7 +15,7 @@ function App() {
 
                 <Route element={<PrivateRoute />}>
                     <Route path="/" element={<Home />} />
-                    <Route path="/create-post" element={<CreatePost />} />
+                    <Route path="/CreatePost" element={<CreatePost />} />
                 </Route>
             </Routes>
         </Router>
