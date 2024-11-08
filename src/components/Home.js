@@ -74,7 +74,7 @@ const Home = () => {
                     <>
                         <p className="text-3xl font-medium">Hello, {user.name}</p>
                         <p className="text-xl mt-2">Welcome to the Blog Platform!</p>
-                        <p className="text-lg mt-4">
+                        <p className="text-lg mt-4 mb-3">
                             Your Role: <span className="font-bold text-blue-600">{user.role}</span>
                         </p>
                     </>
