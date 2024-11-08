@@ -96,24 +96,26 @@ export const getPostById = async (id) => {
 };
 
 export const updatePost = async (id, post) => {
+    const response = await axios.put(`${API_URL}/posts/${id}`, post, {
+        headers: getAuthHeaders(),
+    });
+    return response.data;
+};
+
+export const deletePost = async (id) => {
+    await axios.delete(`${API_URL}/posts/${id}`, {
+        headers: getAuthHeaders(),
+    });
+};
+
+export const getUser = async () => {
     try {
-        const response = await axios.put(`${API_URL}/posts/${id}`, post, {
+        const response = await axios.get(`${API_URL}/user`, {
             headers: getAuthHeaders()
         });
         return response.data;
     } catch (error) {
-        console.error("Error updating post:", error.response?.data || error.message);
-        throw error;
-    }
-};
-
-export const deletePost = async (id) => {
-    try {
-        await axios.delete(`${API_URL}/posts/${id}`, {
-            headers: getAuthHeaders()
-        });
-    } catch (error) {
-        console.error("Error deleting post:", error.response?.data || error.message);
+        console.error("Error fetching user:", error.response?.data || error.message);
         throw error;
     }
 };
