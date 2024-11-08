@@ -25,12 +25,13 @@ Pastikan Anda sudah menginstal:
 1. **Clone Repository**
     ```bash
     git clone https://github.com/Fiffah/blog-frontend.git
-    cd blog-frontend
     ```
 
 2. **Instal Dependencies**
     ```bash
     npm install
+    npm install -D tailwindcss postcss autoprefixer
+    npx tailwindcss init -p
     ```
 
 3. **Konfigurasi API URL**
