@@ -72,6 +72,10 @@ const Home = () => {
             <div className="p-8">
                 {user && <p className="text-3xl font-medium">Hello, {user.name}</p>}
                 <h2 className="text-3xl font-bold mb-6">Welcome to the Blog Platform!</h2>
+                <p className="text-lg mt-4">
+                    Your Role: <span className="font-bold text-blue-600">{user.role}</span>
+                </p>
+
                 {user?.role === 'admin' && <CreatePost onPostCreated={handlePostCreated} />}
 
                 <div className="grid grid-cols-3 gap-6 mt-8">
